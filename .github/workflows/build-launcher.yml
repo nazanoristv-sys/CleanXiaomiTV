@@ -1,0 +1,21 @@
+name: Build launcher
+on: workflow_dispatch
+permissions:
+  contents: write
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: "17"
+      - name: Build
+        run: cd launcher && chmod +x gradlew && ./gradlew --no-daemon assembleRelease
+      - name: Release
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          cp launcher/app/build/outputs/apk/release/app-release.apk launcher-release.apk
+          gh release create "launcher-${{ github.run_number }}" launcher-release.apk --title "Launcher Kuching" --notes "Kuching, method 17"
