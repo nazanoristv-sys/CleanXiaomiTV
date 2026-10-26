@@ -1,0 +1,19 @@
+name: Build prayer
+on: workflow_dispatch
+permissions:
+  contents: write
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: "17"
+      - name: Build
+        run: cd modules && chmod +x gradlew && ./gradlew --no-daemon :prayer:assembleRelease
+      - name: Release
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: gh release create "prayer-${{ github.run_number }}" modules/prayer/build/outputs/apk/release/prayer-release.apk --title "Prayer Times Kuching" --notes "Kuching, method 17"
