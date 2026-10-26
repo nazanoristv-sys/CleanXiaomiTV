@@ -124,7 +124,7 @@ public class MainActivity extends Activity {
         String url = "https://api.aladhan.com/v1/timings/"
                 + new SimpleDateFormat("dd-MM-yyyy", Locale.ROOT).format(new Date())
                 + "?latitude=" + getString(R.string.latitude) + "&longitude=" + getString(R.string.longitude)
-                + "&method=21";   // 21 = Morocco
+                + "&method=17";   // 21 = Morocco
         new Thread(() -> {
             JSONObject json = null;
             try {
